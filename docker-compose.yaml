@@ -1,0 +1,40 @@
+version: '3.8'
+
+networks:
+  network-mongo:
+    driver: bridge
+    name: network-mongo
+
+volumes:
+  volume-mongo:
+    name: volume-mongo
+
+services:
+  mongo-express:
+    container_name: mongo-express
+    image: ivanjuniordocker/mongo-express:${TAG}
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    networks:
+      - network-mongo
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    environment:
+      #ME_CONFIG_BASICAUTH: "true"
+      #ME_CONFIG_BASICAUTH_USERNAME: root
+      #ME_CONFIG_BASICAUTH_PASSWORD: toor
+      ME_CONFIG_SITE_COOKIESECRET: ${COOKIESECRET}
+      ME_CONFIG_SITE_SESSIONSECRET: ${SESSIONSECRET}
+      #ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+  mongo:
+    container_name: mongo
+    image: mongo:5.0.14
+    networks:
+      - network-mongo
+    #ports:
+    #  - 27017:27017
+    volumes:
+      - volume-mongo:/data/db
