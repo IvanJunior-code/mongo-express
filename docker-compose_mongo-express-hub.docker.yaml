@@ -1,0 +1,32 @@
+version: '3.8'
+
+networks:
+  network-mongo:
+    driver: bridge
+    name: network-mongo
+
+volumes:
+  volume-mongo:
+    name: volume-mongo
+
+services:
+  mongo-express:
+    container_name: mongo-express
+    image: mongo-express:1.0.0-alpha.4
+    networks:
+      - network-mongo
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017
+  mongo:
+    container_name: mongo
+    image: mongo:4.4.3
+    networks:
+      - network-mongo
+    #ports:
+    #  - 27017:27017
+    volumes:
+      - volume-mongo:/data/db
