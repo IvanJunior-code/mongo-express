@@ -22,8 +22,8 @@ services:
     volumes:
       - volume-mongo:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${ROOT_PWD}
 
   mongo-express:
     container_name: mongo-express
@@ -37,7 +37,7 @@ services:
       - mongo
     environment:
       ME_CONFIG_MONGODB_ENABLE_ADMIN: 'true'
-      ME_CONFIG_MONGODB_AUTH_DATABASE: db
-      ME_CONFIG_MONGODB_AUTH_USERNAME: admin
-      ME_CONFIG_MONGODB_AUTH_PASSWORD: pass
-      ME_CONFIG_MONGODB_URL: mongodb://admin:example@mongo:27017/
+      ME_CONFIG_MONGODB_AUTH_DATABASE: ${AUTH_DB}
+      ME_CONFIG_MONGODB_AUTH_USERNAME: ${AUTH_USER}
+      ME_CONFIG_MONGODB_AUTH_PASSWORD: ${AUTH_PWD}
+      ME_CONFIG_MONGODB_URL: mongodb://${ROOT_USER}:${ROOT_PWD}@mongo:27017/
